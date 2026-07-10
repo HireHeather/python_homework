@@ -22,6 +22,10 @@ def calc(a, b, operation="multiply"):
             return a - b
         if operation == "modulo":
             return a % b
+        if operation == "int_divide":
+            return a // b
+        if operation == "power":
+            return a ** b
     except ZeroDivisionError:
         return "You can't divide by 0!"
     except TypeError:
@@ -62,7 +66,13 @@ def grade(*args):
 #assignment 6
 
 def repeat(text, count):
-    return text * count
+    result = ""
+
+    for i in range(count):
+        result += text
+
+    return result
+
 #assignemnt 7
 
 
@@ -75,18 +85,32 @@ def student_scores(option, **kwargs):
 #assignment 8
 
 def titleize(title):
-    small_words = ["and", "or", "the"]
+    small_words = [
+        "a",
+        "on",
+        "an",
+        "the",
+        "of",
+        "and",
+        "is",
+        "in"
+    ]
 
     words = title.split()
     result = []
 
     for i, word in enumerate(words):
-        if i == 0 or word not in small_words:
+        if i == 0 or i == len(words) - 1:
             result.append(word.capitalize())
+        elif word.lower() in small_words:
+            result.append(word.lower())
         else:
-            result.append(word)
+            result.append(word.capitalize())
 
     return " ".join(result)
+
+
+ 
 #assignment 9
 
 def hangman(secret_word, guessed_letters):
