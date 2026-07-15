@@ -143,11 +143,6 @@ def create_minutes_set():
     return attendees
 
 
-minutes1, minutes2 = read_minutes()
-
-print(minutes1)
-print(minutes2)
-
 minutes_set = create_minutes_set()
 
 #Task 14: Convert to datetime
@@ -170,12 +165,12 @@ print(minutes_list)
 
 #Task 15: Write Out Sorted List
 def write_sorted_list():
-    sorted_minutes = sorted(minutes_list, key=lambda x: x[1])
+    minutes_list.sort(key=lambda x: x[1])
 
-    sorted_minutes = list(
+    converted_minutes = list(
         map(
             lambda x: (x[0], x[1].strftime("%B %d, %Y")),
-            sorted_minutes
+            minutes_list
         )
     )
 
@@ -184,9 +179,9 @@ def write_sorted_list():
 
         csv_writer.writerow(minutes1["fields"])
 
-        for row in sorted_minutes:
+        for row in converted_minutes:
             csv_writer.writerow(row)
-        return sorted_minutes
+        return converted_minutes
 
 write_sorted_list()
 
