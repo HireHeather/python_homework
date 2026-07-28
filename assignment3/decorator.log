@@ -1,0 +1,30 @@
+Function: hello
+Function: positional_args_function
+Function: keyword_args_function
+Function: hello
+Positional arguments: ()
+Function: positional_args_function
+Positional arguments: (1, 2, 3)
+Function: keyword_args_function
+Positional arguments: ()
+Function: hello
+Positional arguments: ()
+Keyword arguments: {}
+Function: positional_args_function
+Positional arguments: (1, 2, 3)
+Keyword arguments: {}
+Function: keyword_args_function
+Positional arguments: ()
+Keyword arguments: {'name': 'Heather', 'age': 30}
+Function: hello
+Positional arguments: ()
+Keyword arguments: {}
+Return value: None
+Function: positional_args_function
+Positional arguments: (1, 2, 3)
+Keyword arguments: {}
+Return value: True
+Function: keyword_args_function
+Positional arguments: ()
+Keyword arguments: {'name': 'Heather', 'age': 30}
+Return value: <function logger_decorator at 0x000001C5DFC035E0>
