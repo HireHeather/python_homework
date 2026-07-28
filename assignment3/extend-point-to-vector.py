@@ -1,6 +1,7 @@
 #Task 5: Extending a Class
 import math
 
+
 class Point:
 
     def __init__(self, x, y):
@@ -17,18 +18,20 @@ class Point:
         return math.sqrt(
             (other.x - self.x) ** 2 +
             (other.y - self.y) ** 2
-        ) 
+        )
+
+
 class Vector(Point):
 
-        def __str__(self):
-            return f"Vector({self.x}, {self.y})"    
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
 
-        def __add__(self, other):
-            return Vector(
-                self.x + other.x,
-                self.y + other.y
+    def __add__(self, other):
+        return Vector(
+            self.x + other.x,
+            self.y + other.y
+        )
 
-            )
 
 p1 = Point(0, 0)
 p2 = Point(3, 4)

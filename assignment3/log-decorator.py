@@ -8,10 +8,10 @@ logger.addHandler(logging.FileHandler("./decorator.log", "a"))
 def logger_decorator(func):
         def inner(*args, **kwargs):
             result = func(*args, **kwargs) 
-            logger.log(logging.INFO, f"Function: {func.__name__}")
-            logger.log(logging.INFO, f"Positional arguments: {args}")
-            logger.log(logging.INFO, f"Keyword arguments: {kwargs}")
-            logger.log(logging.INFO, f"Return value: {result}")
+            logger.log(logging.INFO, f"function: {func.__name__}")
+            logger.log(logging.INFO, f"positional parameters: {args}")
+            logger.log(logging.INFO, f"keyword parameters: {kwargs}")
+            logger.log(logging.INFO, f"return: {result}")
             return result
         return inner
 

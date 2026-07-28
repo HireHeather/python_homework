@@ -40,6 +40,9 @@ class Board:
 
     def move(self, move_string):
 
+        if move_string not in Board.valid_moves:
+            raise TictactoeException("That's not a valid move.")
+
         move_index = Board.valid_moves.index(move_string)
 
         row = move_index // 3
@@ -57,10 +60,6 @@ class Board:
         else:
             self.turn = "X"
 
-        if move_string not in Board.valid_moves:
-            raise TictactoeException(
-                f"{move_string} is not a valid move."
-            )
     def whats_next(self):
         cat = True
 
@@ -120,10 +119,9 @@ class Board:
                 return (False, "O's turn.")
         else:
             if self.turn == "O":
-                return (True, "X wins!")
+                return (True, "X has won")
             else:
-                return (True, "O wins!")
-
+                return (True, "O has won")
     
 
 
