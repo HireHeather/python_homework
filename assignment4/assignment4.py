@@ -82,6 +82,6 @@ clean_data['Hire Date'] = pd.to_datetime(
 
 print(clean_data['Hire Date'])
 
-clean_data['Name'] = clean_data['Name'].astype(str).str.strip().str.upper()
+clean_data['Name'] = clean_data['Name'].astype(str).str.strip()
 clean_data['Department'] = clean_data['Department'].astype(str).str.strip().str.upper()
 print(clean_data)
