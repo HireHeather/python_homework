@@ -27,13 +27,6 @@ task1_older.to_csv('employees.csv', index=False)
 task2_employees = pd.read_csv('employees.csv')
 print(task2_employees)
 
-additional_data = [
-    {'Name': 'Eve', 'Age': 28, 'City': 'Miami', 'Salary': 60000},
-    {'Name': 'Frank', 'Age': 40, 'City': 'Seattle', 'Salary': 95000}
-]
-
-with open('additional_employees.json', 'w') as f:
-    json.dump(additional_data, f, indent=2)
 
 json_employees = pd.read_json('additional_employees.json')
 print(json_employees)
@@ -82,6 +75,6 @@ clean_data['Hire Date'] = pd.to_datetime(
 
 print(clean_data['Hire Date'])
 
-clean_data['Name'] = clean_data['Name'].astype(str).str.strip()
-clean_data['Department'] = clean_data['Department'].astype(str).str.strip().str.upper()
+clean_data['Name'] = clean_data['Name'].str.strip()
+clean_data['Department'] = clean_data['Department'].str.strip().str.upper()
 print(clean_data)
