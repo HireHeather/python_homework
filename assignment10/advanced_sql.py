@@ -7,6 +7,7 @@ db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "db", "
 
 try:
     conn = sqlite3.connect(db_path)
+    conn.isolation_level = None
 
     cursor = conn.execute("""
         SELECT orders.order_id, SUM(products.price * line_items.quantity) AS total_price
@@ -24,8 +25,8 @@ try:
 
     # TASK 2: Understanding Subqueries
 
-    cursor = conn.execute("""
-        SELECT customers.customer_name, AVG(sub.total_price) AS average_total_price
+        cursor = conn.execute("""
+        SELECT customers.customer_id, customers.customer_name, AVG(sub.total_price) AS average_total_price
         FROM customers
         LEFT JOIN (
             SELECT orders.customer_id AS customer_id_b, orders.order_id,
@@ -43,6 +44,8 @@ try:
         print(row)
 
     # TASK 3: An Insert Transaction Based on Data
+
+       # TASK 3: An Insert Transaction Based on Data
 
     conn.execute("PRAGMA foreign_keys = 1")
 
@@ -63,19 +66,27 @@ try:
     )
     cheapest_product_ids = [row[0] for row in cursor.fetchall()]
 
-    cursor = conn.execute(
-        "INSERT INTO orders (customer_id, employee_id, date) VALUES (?, ?, ?) RETURNING order_id;",
-        (customer_id, employee_id, "2026-09-16")
-    )
-    new_order_id = cursor.fetchone()[0]
+    try:
+        conn.execute("BEGIN")
 
-    for product_id in cheapest_product_ids:
-        conn.execute(
-            "INSERT INTO line_items (order_id, product_id, quantity) VALUES (?, ?, ?);",
-            (new_order_id, product_id, 10)
+        cursor = conn.execute(
+            "INSERT INTO orders (customer_id, employee_id, date) VALUES (?, ?, ?) RETURNING order_id;",
+            (customer_id, employee_id, "2026-09-16")
         )
+        new_order_id = cursor.fetchone()[0]
 
-    conn.commit()
+        for product_id in cheapest_product_ids:
+            conn.execute(
+                "INSERT INTO line_items (order_id, product_id, quantity) VALUES (?, ?, ?);",
+                (new_order_id, product_id, 10)
+            )
+
+        conn.commit()
+
+    except sqlite3.Error as error:
+        conn.rollback()
+        print(f"Transaction failed, rolling back: {error}")
+        raise
 
     cursor = conn.execute("""
         SELECT line_items.line_item_id, line_items.quantity, products.product_name
