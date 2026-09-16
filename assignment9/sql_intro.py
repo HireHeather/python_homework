@@ -6,16 +6,16 @@ DB_PATH = os.path.join("..", "db", "magazines.db")
 
 
 def connect_to_db():
-    
+
     print(f"Connecting to database at: {DB_PATH}")
 
-    connection = sqlite3.connect(DB_PATH)
-
-    # TASK 3:
-
-    connection.execute("PRAGMA foreign_keys = 1")
-
-    return connection
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        connection.execute("PRAGMA foreign_keys = 1")
+        return connection
+    except sqlite3.Error as error:
+        print(f"Database error while connecting: {error}")
+        return None
 
 
 def create_tables(conn):
@@ -67,7 +67,7 @@ def create_tables(conn):
                 magazine_id INTEGER NOT NULL,
                 expiration_date TEXT NOT NULL,
                 FOREIGN KEY(subscriber_id) REFERENCES subscribers(id),
-                FOREIGN KEY(magazine_id) REFERENCES magazines(id)
+                FOREIGN KEY(magazine_id) REFERENCES magazines(id),
                 UNIQUE(subscriber_id, magazine_id)
             );
         """)
@@ -247,16 +247,19 @@ def run_assignment_queries(conn, oreilly_name):
 
         # QUERY 3: Find magazines for a specific publisher using a relational JOIN
         # We look for 'OREILLY MEDIA INC' (ID generated dynamically during seed phase)
-        print("\n--- Query 3: Magazines Published by O'Reilly Media ---")
+        print(f"\n--- Query 3: Magazines Published by {oreilly_name} ---")
         cursor.execute("""
             SELECT magazines.id, magazines.name, publishers.name 
             FROM magazines
             INNER JOIN publishers ON magazines.publisher_id = publishers.id
             WHERE publishers.name = ?;
         """, (oreilly_name,))
+    
         joined_results = cursor.fetchall()
         for row in joined_results:
             print(row)
+        if not joined_results:
+            print(f"No magazines found for publisher '{oreilly_name}'.")
 
     except sqlite3.Error as error:
         print(f"An error occurred while executing analytics: {error}")

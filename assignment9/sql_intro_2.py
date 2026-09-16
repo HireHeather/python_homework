@@ -26,6 +26,6 @@ print(summary.head(5))
 
 
 summary = summary.sort_values('product_name')
+summary = summary.reset_index()
 output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "order_summary.csv")
-summary.to_csv(output_path)
-
+summary.to_csv(output_path, index=False)
