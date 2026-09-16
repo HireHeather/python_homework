@@ -53,10 +53,11 @@ def create_tables(conn):
             CREATE TABLE IF NOT EXISTS subscribers (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                address TEXT NOT NULL
+                address TEXT NOT NULL,
+                UNIQUE(name, address)
             );
         """)
-
+    
         # 4. SUBSCRIPTIONS (JOIN TABLE)
        
         cursor.execute("""
@@ -67,6 +68,7 @@ def create_tables(conn):
                 expiration_date TEXT NOT NULL,
                 FOREIGN KEY(subscriber_id) REFERENCES subscribers(id),
                 FOREIGN KEY(magazine_id) REFERENCES magazines(id)
+                UNIQUE(subscriber_id, magazine_id)
             );
         """)
 
@@ -223,7 +225,7 @@ def add_subscription(conn, subscriber_id, magazine_id, expiration_date):
 
 
 
-def run_assignment_queries(conn):
+def run_assignment_queries(conn, oreilly_name):
     """Runs our assignment analysis questions and displays the clean raw rows."""
     try:
         cursor = conn.cursor()
@@ -250,8 +252,8 @@ def run_assignment_queries(conn):
             SELECT magazines.id, magazines.name, publishers.name 
             FROM magazines
             INNER JOIN publishers ON magazines.publisher_id = publishers.id
-            WHERE publishers.name = 'OReilly Media Inc';
-        """)
+            WHERE publishers.name = ?;
+        """, (oreilly_name,))
         joined_results = cursor.fetchall()
         for row in joined_results:
             print(row)
@@ -273,7 +275,8 @@ if __name__ == "__main__":
             print("\n=== Beginning Data Seeding Phase ===")
 
             # Step 3: Populate Table 1 (Publishers) - Generates 3 items
-            pub1_id = add_publisher(connection, "OReilly Media Inc")
+            oreilly_name = "O'Reilly Media Inc"
+            pub1_id = add_publisher(connection, oreilly_name)
             pub2_id = add_publisher(connection, "Condé Nast")
             pub3_id = add_publisher(connection, "Hearst Communications")
 
@@ -293,13 +296,19 @@ if __name__ == "__main__":
                 connection, "Charlie Brown", "123 Python Way"
             )  # Same name, different address rule confirmation check
 
+            sub4_id = add_subscriber(
+                connection, "Alice Smith", "123 Python Way"
+            )  # Exact duplicate of sub1 - demonstrates the name+address duplicate rule
+
+
+
             # Step 6: Populate Table 4 (Subscriptions) - Map links together with dates
             add_subscription(connection, sub1_id, mag1_id, "2027-01-01")
             add_subscription(connection, sub2_id, mag2_id, "2026-12-31")
             add_subscription(connection, sub3_id, mag3_id, "2028-06-15")
 
             print("\n=== Executing Verification Queries ===")
-            run_assignment_queries(connection)
+            run_assignment_queries(connection, oreilly_name)
 
         finally:
             # Task 1 Requirement: Always cleanly close connections when done

@@ -1,4 +1,4 @@
-product_id,line_item_id,total,product_name
+product_id,order_count,total_sales,product_name
 59,14,1385.8,Ball
 23,12,16.56,Bike
 55,19,818.12,Chair
