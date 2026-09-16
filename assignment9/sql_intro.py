@@ -218,9 +218,9 @@ def add_subscription(conn, subscriber_id, magazine_id, expiration_date):
         return None
 
 
-# ==========================================
+
 # TASK 4: READ AND JOIN QUERY FUNCTIONS
-# ==========================================
+
 
 
 def run_assignment_queries(conn):
@@ -260,9 +260,7 @@ def run_assignment_queries(conn):
         print(f"An error occurred while executing analytics: {error}")
 
 
-# ==========================================
-# MAIN SCRIPT EXECUTION TRACK
-# ==========================================
+
 if __name__ == "__main__":
     # Step 1: Open communication block line
     connection = connect_to_db()
