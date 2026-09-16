@@ -26,7 +26,7 @@ try:
     # TASK 2: Understanding Subqueries
 
         cursor = conn.execute("""
-        SELECT customers.customer_id, customers.customer_name, AVG(sub.total_price) AS average_total_price
+        SELECT customers.customer_name, AVG(sub.total_price) AS average_total_price
         FROM customers
         LEFT JOIN (
             SELECT orders.customer_id AS customer_id_b, orders.order_id,
