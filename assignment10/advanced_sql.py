@@ -29,7 +29,7 @@ try:
         SELECT customers.customer_name, AVG(sub.total_price) AS average_total_price
         FROM customers
         LEFT JOIN (
-            SELECT orders.customer_id AS customer_id_b, orders.order_id,
+            SELECT orders.customer_id AS customer_id_b,
                    SUM(products.price * line_items.quantity) AS total_price
             FROM orders
             JOIN line_items ON orders.order_id = line_items.order_id
